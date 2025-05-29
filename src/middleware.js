@@ -12,6 +12,11 @@ export function middleware(request) {
     if (parts.length >= 2 && !host.startsWith('localhost')) {
       city = parts[0]; // subdomain before localhost
     }
+  } else if (host.includes('vercel')) {
+    const parts = host.split('.');
+    if (parts.length >= 4) {
+      city = parts[0];
+    }
   } else {
     // For production domains like city.example.com
     const parts = host.split('.');
