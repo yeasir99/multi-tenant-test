@@ -18,7 +18,11 @@ export default async function Home({ searchParams }) {
               .map(city => (
                 <li key={city}>
                   <a
-                    href={`http://${city}.${process.env.NEXT_PUBLIC_DOMAIN}`}
+                    href={`${
+                      process.env.NEXT_PUBLIC_DOMAIN.includes('localhost')
+                        ? 'http'
+                        : 'https'
+                    }://${city}.${process.env.NEXT_PUBLIC_DOMAIN}`}
                     className="text-blue-600 hover:underline"
                   >
                     {city.charAt(0).toUpperCase() + city.slice(1)}
