@@ -7,25 +7,22 @@ export function middleware(request) {
   let city = 'default';
 
   if (host.includes('localhost')) {
+    // e.g. london.localhost or localhost:3000
     const parts = host.split('.');
-    // Example: london.localhost:3000 → ['london', 'localhost:3000']
     if (parts.length >= 2 && !host.startsWith('localhost')) {
-      city = parts[0]; // subdomain before localhost
-    }
-  } else if (host.includes('vercel')) {
-    const parts = host.split('.');
-    if (parts.length >= 4) {
       city = parts[0];
     }
   } else {
-    // For production domains like city.example.com
     const parts = host.split('.');
-    if (parts.length >= 3) {
-      city = parts[0];
+
+    // Filter out www if present
+    const subdomain = parts.length > 2 ? parts[0] : null;
+
+    if (subdomain && subdomain !== 'www') {
+      city = subdomain; // e.g. london.gcity.xyz
     }
   }
 
   url.searchParams.set('city', city);
-
   return NextResponse.rewrite(url);
 }
